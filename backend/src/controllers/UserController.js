@@ -24,15 +24,15 @@ const generateAccessAndRefreshToken = async (id) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   console.log("1");
-  const { fullname, username, email, password, phone } = req.body;
+  const { fullname, email, password } = req.body;
   console.log("2");
-  console.log(fullname, username, email, password, phone);
-  if (!(fullname && username && email && password && phone)) {
+  console.log(fullname, email, password);
+  if (!(fullname && email && password)) {
     throw new ApiErrors(400, "All fields are required");
   }
   console.log("3");
   const existedUser = await User.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ email }],
   });
   console.log("4");
   if (existedUser) {
@@ -41,9 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
   console.log("5");
   const user = await User.create({
     fullname,
-    username: username.toLowerCase(),
     email: email.toLowerCase(),
-    phone,
     password,
   });
   console.log("6");
@@ -165,7 +163,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incommingUserId = req.body.userId;
-
+  // console.log(req.body);
   if (!incommingUserId) {
     throw new ApiErrors(400, "id is required");
   }
