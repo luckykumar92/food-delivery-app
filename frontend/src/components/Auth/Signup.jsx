@@ -1,22 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/logo2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import swal from "sweetalert";
 
 const Signup = () => {
   const { register, handleSubmit } = useForm();
-  const createAccount = async (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
+  const createAccount = async (data) => {
+    setError("");
     try {
-      const userData = await axios("/api/v1/users/register", data);
+      const userData = await axios.post("/api/v1/users/register", data);
       if (userData) {
-        alert("Account created Successfully");
-        navigate("/login");
+        // alert("Account created Successfully");
+         swal(
+           "Information Updated!",
+           "Account created Successfully!",
+           "success"
+         );
+        navigate("/signin");
       }
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
     }
   };
 
@@ -27,6 +36,7 @@ const Signup = () => {
         <div>
           <img className="w-52" src={logo} alt="logo" />
         </div>
+        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
         {/* sign up form  */}
         <form
           onSubmit={handleSubmit(createAccount)}
@@ -36,7 +46,7 @@ const Signup = () => {
               type="text"
               placeholder="Name"
               className="w-full px-4 py-3 rounded-lg ring-red-200 focus:ring-4 focus:outline-none transition duration-300 border border-gray-300 focus:shadow-xl"
-              {...register("fullName", {
+              {...register("fullname", {
                 required: true,
               })}
             />{" "}

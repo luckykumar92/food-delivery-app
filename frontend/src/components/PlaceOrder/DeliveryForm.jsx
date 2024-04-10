@@ -7,6 +7,7 @@ import { updateAddress } from "../../redux/features/product/orderSlice";
 const DeliveryForm = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
+  
   const address = async (data) => {
     localStorage.setItem("address", JSON.stringify(data));
     dispatch(updateAddress(data));

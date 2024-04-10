@@ -13,7 +13,7 @@ const CartPage = () => {
   const addressLength = JSON.stringify(address).length;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log(cartItems);
   const orderHandler = () => {
     swal("Congratulations!!!", `order placed successfully`, "success");
     localStorage.removeItem("cart");

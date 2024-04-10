@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { login as authLogin } from "../../redux/features/auth/authSlice";
 import axios from "axios";
+import swal from "sweetalert";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const login = async (data) => {
-    console.log(data);
     setLoading(true);
     setError("");
     try {
@@ -24,6 +24,7 @@ const Login = () => {
         const userData = await axios.get("/api/v1/users/me");
         console.log(userData.data.data);
         if (userData) dispatch(authLogin(userData.data.data));
+        swal("Information Updated!", "Logged in Successfully!", "success");
         navigate("/");
       }
     } catch (error) {
